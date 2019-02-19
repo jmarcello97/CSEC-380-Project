@@ -1,11 +1,19 @@
-database:
-  image: mysql
-  container_name: database
-  command: mysqld --user=root --verbose
-  volumes:
-    - ./database_schema/user_db.sql:/docker-entrypoint-initdb.d/dump.sql
-  ports:
-    - "3307-3306"
-  environment:
-    MYSQL_ROOT_PASSWORD: SuperS3cret
-    MYSQL_DATABASE: user_db
+version: "3"
+
+services:
+  webserver:
+    build: ./apache
+    ports:
+      - "80:80"
+
+  database:
+    image: mysql
+    container_name: database
+    command: mysqld --user=root --verbose
+    volumes:
+      - ./database_schema/user_db.sql:/docker-entrypoint-initdb.d/dump.sql
+    ports:
+      - "3307-3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: SuperS3cret
+      MYSQL_DATABASE: user_db
