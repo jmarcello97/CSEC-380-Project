@@ -1,0 +1,5 @@
+pytest
+requests
+flask
+flask-mysqldb
+flask_socketio
