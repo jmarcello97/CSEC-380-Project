@@ -6,6 +6,6 @@
   services:
     - docker
   before_install:
-    - docker-compose -f act2_test/docker-compose.yml up -d
+    - docker-compose -f ./tests/act2_test/docker-compose.yml up -d
   script:
-    - pytest
+    - python ./tests/test_webserver.py
