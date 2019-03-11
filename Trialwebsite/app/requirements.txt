@@ -3,3 +3,5 @@ requests
 flask
 flask-mysqldb
 flask_socketio
+passlib
+mysqlclient

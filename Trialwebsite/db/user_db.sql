@@ -1,6 +1,9 @@
 
 
-DROP TABLE IF EXISTS User; 
+CREATE DATABASE users;
+USE users;
+
+DROP TABLE IF EXISTS User;
 
 CREATE TABLE User (
 	UserID int(5) NOT NULL,
