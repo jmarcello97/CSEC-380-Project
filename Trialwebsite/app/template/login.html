@@ -42,14 +42,13 @@ input[type=submit] {
 
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
     <div class="row">
       <h2 style="text-align:center">Welcome to [Website Name]!</h2>
-      <form action="/" class="form-inline" method="post">
+      <form action="" class="form-inline" method="post">
 
         <input type="text" class="form-control" name="username" placeholder="Username" required value="{{request.form.username}}">
         <input type="password" class="form-control" name="password" placeholder="Password" required value="{{request.form.password}}">
@@ -57,17 +56,6 @@ input[type=submit] {
       </form>
 
       <p>{{error}}</p>      
-    </div>
-    <div class="container-fluid" style="min-height:100% width:80%">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-warning alert-dismissible" role="alert">
-          {{message}}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     </div>
 </div>
 

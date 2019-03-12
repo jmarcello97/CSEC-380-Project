@@ -13,6 +13,9 @@ CREATE TABLE User (
 	PRIMARY KEY (UserID)
 );
 
+-- Insert user for testing purposes
+INSERT INTO User VALUES(1, "admin", "$5$rounds=535000$Lz8amuEeaJdfDLJ7$VzAbQapAX6F8rItWDJIDlNFrj80rg/xx7ItGAUjqehA", "admin");
+
 DROP TABLE IF EXISTS Video;
 
 CREATE TABLE Video (
