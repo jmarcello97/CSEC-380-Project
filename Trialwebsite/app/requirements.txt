@@ -5,3 +5,4 @@ flask-mysqldb
 flask_socketio
 passlib
 mysqlclient
+flask.session
