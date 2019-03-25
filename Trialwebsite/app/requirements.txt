@@ -6,3 +6,4 @@ flask_socketio
 passlib
 mysqlclient
 flask.session
+flask_limiter

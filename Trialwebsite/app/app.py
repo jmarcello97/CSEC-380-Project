@@ -1,4 +1,6 @@
 from flask import Flask, flash, render_template, request, url_for, redirect, session, g
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 #from flask_mysqldb import MySQL
 import MySQLdb
 from MySQLdb import escape_string as thwart
@@ -15,7 +17,15 @@ time.sleep(30)
 conn = MySQLdb.connect(host="db", user="root", passwd="root", db="users", port = 3306)
 c = conn.cursor()
 
+#for limiting the brute force attack
+limiter = Limiter (
+    app,
+    key_func=get_remote_address,
+   # default_limits=["28000 per day", "1000 per hour", "20 per minute"]
+)
+#limiting the  brute force attack
 @app.route('/', methods=["GET","POST"])
+@limiter.limit("7000/day;300/hour;5/minute")
 def index():
 	error = ''
 	try:
