@@ -24,6 +24,7 @@ class users(db.Model):
         self.Username = Username
         self.PasswordHash = PasswordHash
         self.DisplayName = DisplayName
+
 #used for seassion config
 secKey = os.urandom(24)
 app.secret_key = secKey
