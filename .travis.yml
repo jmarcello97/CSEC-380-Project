@@ -7,5 +7,7 @@
     - docker
   before_install:
     - docker-compose -f ./tests/act2_test/docker-compose.yml up -d
+    - docker-compose -f ./tests/act3_test/docker-compose.yml up -d
   script:
     - python ./tests/test_webserver.py
+    - python ./tests/test_authentication.py
