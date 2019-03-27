@@ -1,0 +1,20 @@
+* Provide a link to the test cases you generated for this activity.
+    https://github.com/jmarcello97/CSEC-380-Project/blob/master/tests/test_authentication.py
+
+* How do you ensure that users that navigate to the protected pages cannot bypass authentication requirements?
+    We have checks on each page to ensure the user trying to enter the page is still authenticated using the seassion keys that got generated using their login credentials.
+
+* How do you protect against session fixation?
+    We protect against this by assigning a new cookie as soon as the user has passed authentication.
+
+* How do you ensure that if your database gets stolen passwords aren’t exposed?
+    We do not store the password in plain password, however we use sha256 algorathim to store the password in the database.
+
+* How do you prevent password brute force?
+    We  manage the amount of login for every specfic user(IP address), in our implenentation we have limited the amount of login per menuite to 10  times
+
+* How do you prevent username enumeration?
+    We prevent username enumeration by giving a generic login failed message and not a specific one where the server reports whether the user doesn’t exist or it’s just a wrong password.
+
+* What happens if your sessionID is predictable, how do you prevent that?
+    If our sessionID was predictable then an attacker could easily fake the ID and bypass authentication and gain unauthorized access. To prevent this we could check for a change in IP and if there is a change, terminate the session. (Another one that has many solutions, I’m not sure which you guys implemented on the back end)
