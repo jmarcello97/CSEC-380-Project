@@ -8,11 +8,17 @@ from MySQLdb import escape_string as thwart
 from passlib.hash import sha256_crypt
 import os
 import time
+from werkzeug import secure_filename
 
 time.sleep(30)
 app = Flask(__name__, template_folder="template")
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@db:3306/users"
 db = SQLAlchemy(app)
+
+
+# create the folders when setting up your app
+os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
+
 
 class users(db.Model):
     __tablename__ = "User"
@@ -100,7 +106,16 @@ def before_request():
 	g.user = None
 	if "username" in session:
 		g.user = session["username"]
-
+@app.route('/upload' , methods = ['GET', 'POST'] )
+def upload():
+     if 'username' in session:
+        if request.method == 'POST':
+             f = request.files['file']
+            # when saving the file
+            f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+            return 'file uploaded successfully'
+#        f.save(secure_filename(f.filename))
+     return render_template('index.html')
 
 if __name__ == '__main__':
 	#app.run()
