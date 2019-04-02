@@ -108,14 +108,17 @@ def before_request():
 		g.user = session["username"]
 @app.route('/upload' , methods = ['GET', 'POST'] )
 def upload():
-     if 'username' in session:
-        if request.method == 'POST':
-             f = request.files['file']
-            # when saving the file
-            f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
-            return 'file uploaded successfully'
-#        f.save(secure_filename(f.filename))
-     return render_template('index.html')
+	if 'username' in session:
+		if request.method == 'POST':
+			f = request.files['file']
+			# when saving the file
+			f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+			return 'file uploaded successfully'
+		#        f.save(secure_filename(f.filename))
+
+	videos = os.listdir("instance/video")
+	#return render_template('test_upload.html')
+	return render_template('upload.html', videos=videos)
 
 if __name__ == '__main__':
 	#app.run()
