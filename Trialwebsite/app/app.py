@@ -9,7 +9,10 @@ from passlib.hash import sha256_crypt
 import os
 import time
 from werkzeug import secure_filename
-
+import urllib.request
+#import pytube
+import shutil
+import requests
 time.sleep(30)
 app = Flask(__name__, template_folder="template")
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@db:3306/users"
@@ -50,7 +53,7 @@ limiter = Limiter (
 )
 #limiting the  brute force attack
 @app.route('/', methods=["GET","POST"])
-@limiter.limit("7000/day;300/hour;5/minute")
+@limiter.limit("8000/day;400/hour;25/minute")
 def index():
 	error = ''
 	try:
@@ -108,20 +111,34 @@ def before_request():
 		g.user = session["username"]
 @app.route('/upload' , methods = ['GET', 'POST'] )
 def upload():
-	if 'username' in session:
-		if request.method == 'POST':
-			f = request.files['file']
-			# when saving the file
-			f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
-			return 'file uploaded successfully'
-		#        f.save(secure_filename(f.filename))
+     if 'username' in session:
+        if request.method == 'POST':
+            #f = request.files['file']
+            f2 = request.form['link11']
 
-	videos = os.listdir("instance/video")
-	#return render_template('test_upload.html')
-	return render_template('upload.html', videos=videos)
+            #if f:
+                # when saving the file
+             #   f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+              #  return 'file uploaded successfully'
+#             #  f.save(secure_filename(f.filename))
+            if f2:
+                url = request.form['link11']
+                reqGet = requests.get(url)
+                filename123 = url.split("/")[-1]
+
+                os.path.join(app.instance_path, filename123)
+                with open(filename123,'wb') as vid:
+                    shutil.copyfileobj(reqGet.raw, vid)
+
+                #urllib.request.urlretrieve(url_link, 'video_name.mp4')
+                #v = pafy.new(str(url))
+                #s = v.allstreams[len(v.allstreams)-1]
+                #filename = s.download(os.path.join(app.instance_path, 'video', secure_filename(v.title)))
+     return render_template('upload.html')
 
 if __name__ == '__main__':
 	#app.run()
 	app.run(host='0.0.0.0', debug=True)
     #port = int(os.environ.get('PORT', 5000))
     #app.run(app, host='0.0.0.0', port=port)
+
