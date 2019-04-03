@@ -1,7 +1,6 @@
 from flask import Flask, flash, render_template, request, url_for, redirect, session, g
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-#from flask_mysqldb import MySQL
 import MySQLdb
 from flask_sqlalchemy import SQLAlchemy
 from MySQLdb import escape_string as thwart
@@ -9,7 +8,9 @@ from passlib.hash import sha256_crypt
 import os
 import time
 from werkzeug import secure_filename
-
+import urllib.request
+import shutil
+import requests
 time.sleep(30)
 app = Flask(__name__, template_folder="template")
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@db:3306/users"
@@ -22,18 +23,34 @@ os.makedirs('static', exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
-    UserID = db.Column('UserID', db.Integer, primary_key=True)
+    UserID = db.Column('UserID', db.Integer, primary_key=True, nullable=False)
     Username = db.Column('Username', db.String(15))
     PasswordHash = db.Column('PasswordHash', db.String(200))
     DisplayName = db.Column('DisplayName', db.String(15))
     #data = db.Column()
-
-
     def __init__(self,UserID, Username, PasswordHash, DisplayName ):
         self.UserID = UserID
         self.Username = Username
         self.PasswordHash = PasswordHash
         self.DisplayName = DisplayName
+
+
+
+class Video(db.Model):
+    __tablename__ = "Video"
+    VideoID = db.Column("VideoID", db.Integer, primary_key= True)
+    UserID = db.Column('UserID', db.Integer, ForeignKey_key=("User.UserID"), nullable=False)
+    URL = db.Column('URL', db.String(60))
+    Name = db.Column('Name', db.String(60))
+    UploadDate = db.Column('UploadDate', db.DateTime)
+
+
+    def __init__(self,VideoID, UserID, URL, Name, UploadDate  ):
+        self.VideoID = VideoID
+        self.UserID = UserID
+        self.URL = URL
+        self.Name = Name
+        self.UploadDate = UploadDate
 
 #used for seassion config
 secKey = os.urandom(24)
@@ -50,7 +67,7 @@ limiter = Limiter (
 )
 #limiting the  brute force attack
 @app.route('/', methods=["GET","POST"])
-@limiter.limit("7000/day;300/hour;5/minute")
+@limiter.limit("8000/day;400/hour;25/minute")
 def index():
 	error = ''
 	try:
@@ -113,6 +130,7 @@ def before_request():
 		g.user = session["username"]
 @app.route('/upload' , methods = ['GET', 'POST'] )
 def upload():
+<<<<<<< HEAD
 	if 'username' in session:
 		if request.method == 'POST':
 			f = request.files['file']
@@ -125,9 +143,35 @@ def upload():
 	videos = os.listdir("static")
 	#return render_template('test_upload.html')
 	return render_template('upload.html', videos=videos)
+=======
+     if 'username' in session:
+        if request.method == 'POST':
+            #f = request.files['file']
+            f2 = request.form['link11']
+
+            #if f:
+                # when saving the file
+             #   f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+              #  return 'file uploaded successfully'
+#             #  f.save(secure_filename(f.filename))
+            if f2:
+                url = request.form['link11']
+                reqGet = requests.get(url)
+                filename123 = url.split("/")[-1]
+                os.path.join(app.instance_path, "video", filename123)
+                with open(filename123,'wb') as vid:
+                    shutil.copyfileobj(reqGet.raw, vid)
+
+                #urllib.request.urlretrieve(url_link, 'video_name.mp4')
+                #v = pafy.new(str(url))
+                #s = v.allstreams[len(v.allstreams)-1]
+                #filename = s.download(os.path.join(app.instance_path, 'video', secure_filename(v.title)))
+     return render_template('upload.html')
+>>>>>>> 87c7baff86dae773b762135ee41204844c919aa8
 
 if __name__ == '__main__':
 	#app.run()
 	app.run(host='0.0.0.0', debug=True)
     #port = int(os.environ.get('PORT', 5000))
     #app.run(app, host='0.0.0.0', port=port)
+
