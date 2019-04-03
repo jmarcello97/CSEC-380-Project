@@ -1,7 +1,6 @@
 from flask import Flask, flash, render_template, request, url_for, redirect, session, g
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-#from flask_mysqldb import MySQL
 import MySQLdb
 from flask_sqlalchemy import SQLAlchemy
 from MySQLdb import escape_string as thwart
@@ -10,7 +9,6 @@ import os
 import time
 from werkzeug import secure_filename
 import urllib.request
-#import pytube
 import shutil
 import requests
 time.sleep(30)
@@ -25,18 +23,34 @@ os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
-    UserID = db.Column('UserID', db.Integer, primary_key=True)
+    UserID = db.Column('UserID', db.Integer, primary_key=True, nullable=False)
     Username = db.Column('Username', db.String(15))
     PasswordHash = db.Column('PasswordHash', db.String(200))
     DisplayName = db.Column('DisplayName', db.String(15))
     #data = db.Column()
-
-
     def __init__(self,UserID, Username, PasswordHash, DisplayName ):
         self.UserID = UserID
         self.Username = Username
         self.PasswordHash = PasswordHash
         self.DisplayName = DisplayName
+
+
+
+class Video(db.Model):
+    __tablename__ = "Video"
+    VideoID = db.Column("VideoID", db.Integer, primary_key= True)
+    UserID = db.Column('UserID', db.Integer, ForeignKey_key=("User.UserID"), nullable=False)
+    URL = db.Column('URL', db.String(60))
+    Name = db.Column('Name', db.String(60))
+    UploadDate = db.Column('UploadDate', db.DateTime)
+
+
+    def __init__(self,VideoID, UserID, URL, Name, UploadDate  ):
+        self.VideoID = VideoID
+        self.UserID = UserID
+        self.URL = URL
+        self.Name = Name
+        self.UploadDate = UploadDate
 
 #used for seassion config
 secKey = os.urandom(24)
@@ -125,8 +139,7 @@ def upload():
                 url = request.form['link11']
                 reqGet = requests.get(url)
                 filename123 = url.split("/")[-1]
-
-                os.path.join(app.instance_path, filename123)
+                os.path.join(app.instance_path, "video", filename123)
                 with open(filename123,'wb') as vid:
                     shutil.copyfileobj(reqGet.raw, vid)
 
