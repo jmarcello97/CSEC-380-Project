@@ -3,7 +3,7 @@
 <body style="background-color: #4286f4"> 
 
 <p>
-	<a style="float:left; color:black" href="Homepage URL Here">Back to Homepage</a>
+	<a style="float:left; color:black" href="Homepage URL Here">{{ video_name }}</a>
 
 	<a style="float:right; color:black" href="Logout URL Here">Logout</a>
     <br>
@@ -17,7 +17,11 @@
 </video>
 -->
 
-<iframe width="100%" height="515" src="https://www.youtube.com/embed/MtN1YnoL46Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<video width="400" controls autoplay>
+  <source src={{ video_name }} type="video/mp4">
+</video>
 
+<!--<video width="100%" height="515" src={{ video_name }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></video>
+-->
 </body> 
 </html>

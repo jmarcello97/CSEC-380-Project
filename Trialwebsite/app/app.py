@@ -17,8 +17,8 @@ db = SQLAlchemy(app)
 
 
 # create the folders when setting up your app
-os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
-
+#os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
+os.makedirs('static', exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
@@ -85,12 +85,17 @@ def logout():
     dropSession()
     return redirect(url_for('/'))
 
-@app.route("/video")
-def video():
+@app.route("/video/<filename>")
+def video(filename):
 	if 'username' in session:
-		return render_template("video_viewing_screen.html")
+		#return app.send_static_file(filename)
+		#filename = os.path.join('static', filename)
+		return render_template("video_viewing_screen.html",video_name=filename)
+		#return redirect(filename)
+		#return render_template(filename)
 	else:
 		return redirect(url_for("index"))
+
 @app.route("/getSession")
 def getSession():
 	if "username" in session:
@@ -112,11 +117,12 @@ def upload():
 		if request.method == 'POST':
 			f = request.files['file']
 			# when saving the file
-			f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+			f.save("static/{}".format(f.filename))
+			#f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
 			return 'file uploaded successfully'
 		#        f.save(secure_filename(f.filename))
 
-	videos = os.listdir("instance/video")
+	videos = os.listdir("static")
 	#return render_template('test_upload.html')
 	return render_template('upload.html', videos=videos)
 

@@ -9,7 +9,7 @@
       <section class="row">
         {% for video in videos %}
           <section class="col-md-4 col-sm-6 style="background-color: green;">
-            <a href="{{ url_for('static', filename='videos/' + video) }}">{{ video }}</a>
+            <a href="{{ url_for('static', filename = video )}}">{{ video }}</a>
           </section>
         {% endfor %}
       </section>
