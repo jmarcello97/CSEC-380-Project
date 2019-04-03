@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 
 # create the folders when setting up your app
 #os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
-os.makedirs('static', exist_ok=True)
+#os.makedirs('static', exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
@@ -135,12 +135,12 @@ def upload():
 		if request.method == 'POST':
 			f = request.files['file']
 			# when saving the file
-			f.save("static/{}".format(f.filename))
+			f.save("static/videos/{}".format(f.filename))
 			#f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
 			return 'file uploaded successfully'
 		#        f.save(secure_filename(f.filename))
 
-	videos = os.listdir("static")
+	videos = os.listdir("static/videos")
 	#return render_template('test_upload.html')
 	return render_template('upload.html', videos=videos)
 #=======
@@ -168,6 +168,10 @@ def upload():
                 #filename = s.download(os.path.join(app.instance_path, 'video', secure_filename(v.title)))
 	return render_template('upload.html')
 #>>>>>>> 87c7baff86dae773b762135ee41204844c919aa8
+
+@app.route('/delete_video', methods = ['POST'])
+def delete_video(filename):
+	return "test"
 
 if __name__ == '__main__':
 	#app.run()
