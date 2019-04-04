@@ -11,6 +11,8 @@ from werkzeug import secure_filename
 import urllib.request
 import shutil
 import requests
+from datetime import datetime
+
 time.sleep(30)
 app = Flask(__name__, template_folder="template")
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@db:3306/users"
@@ -23,7 +25,7 @@ os.makedirs('static/videos', exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
-    UserID = db.Column('UserID', db.Integer, primary_key=True, nullable=False)
+    UserID = db.Column('UserID', db.Integer, primary_key=True, nullable=False, autoincrement=True)
     Username = db.Column('Username', db.String(15))
     PasswordHash = db.Column('PasswordHash', db.String(200))
     DisplayName = db.Column('DisplayName', db.String(15))
@@ -38,10 +40,10 @@ class users(db.Model):
 
 class Video(db.Model):
     __tablename__ = "Video"
-    VideoID = db.Column("VideoID", db.Integer, primary_key= True)
+    VideoID = db.Column("VideoID", db.Integer, primary_key= True, autoincrement=True)
     UserID = db.Column('UserID', db.Integer, ForeignKey_key=("User.UserID"), nullable=False)
     URL = db.Column('URL', db.String(60))
-    Name = db.Column('Name', db.String(60))
+    Name = db.Column('Name', db.String(100))
     UploadDate = db.Column('UploadDate', db.DateTime)
 
 
@@ -136,7 +138,13 @@ def upload():
 			f = request.files['file']
 			# when saving the file
 			f.save("static/videos/{}".format(f.filename))
-			#f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
+			
+			data=users.query.filter_by(Username=session['username']).first()
+			new_video = Video(VideoID = None, UserID = data.UserID, URL = "local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
+			db.session.add(new_video)
+			db.session.commit()
+			#i = Video.insert()
+			#i.execute(UserID=data.UserID, URL = "Local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
 			videos = os.listdir("static/videos")
 			return render_template('upload.html', videos=videos)
 		#        f.save(secure_filename(f.filename))
@@ -174,6 +182,10 @@ def upload():
 def delete_video(filename):
 	if 'username' in session:
 		os.remove("static/videos/{}".format(filename))
+		data=users.query.filter_by(Username=session['username']).first()
+		video=Video.query.filter_by(UserID=data.UserID,Name=filename).first()
+		db.session.delete(video)
+		db.session.commit()
 		return redirect(url_for('upload'))
 	return "test"
 
