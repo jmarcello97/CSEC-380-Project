@@ -145,7 +145,11 @@ def upload():
 			db.session.commit()
 			#i = Video.insert()
 			#i.execute(UserID=data.UserID, URL = "Local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
-			videos = os.listdir("static/videos")
+			videos = []
+			for video in os.listdir("static/videos"):
+				video_uploader = Video.query.filter_by(Name=video).first()
+				video_uploader = users.query.filter_by(UserID=video_uploader.UserID).first()
+				videos.append((video, video_uploader.Username))
 			return render_template('upload.html', videos=videos)
 		#        f.save(secure_filename(f.filename))
 
@@ -184,8 +188,11 @@ def delete_video(filename):
 		os.remove("static/videos/{}".format(filename))
 		data=users.query.filter_by(Username=session['username']).first()
 		video=Video.query.filter_by(UserID=data.UserID,Name=filename).first()
-		db.session.delete(video)
-		db.session.commit()
+		if video.UserID == data.UserID:
+			db.session.delete(video)
+			db.session.commit()
+		else:
+			return "Don't delete other people's videos!"
 		return redirect(url_for('upload'))
 	return "test"
 
