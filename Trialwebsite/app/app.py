@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 
 # create the folders when setting up your app
 #os.makedirs(os.path.join(app.instance_path, 'video'), exist_ok=True)
-#os.makedirs('static', exist_ok=True)
+os.makedirs('static/videos', exist_ok=True)
 
 class users(db.Model):
     __tablename__ = "User"
