@@ -1,9 +1,8 @@
 <html>
    <body>
       <form action = "http://localhost:5000/upload" method ="POST" enctype = "multipart/form-data">
-	    Upload from Computer:<input type=file name=file><br>
-	    Upload from Link:<input type="text" name="link11">
-	    <input type=submit value=Upload>
+	    Upload from Computer:<input type=file name=file> <input type=submit value=Upload_File> <br \>
+	    Upload from Link:<input type="text" name="link11"> <input type=submit value=Upload_Link>
 
       </form>
       <section class="row">
@@ -16,5 +15,16 @@
           </section>
         {% endfor %}
       </section>
+    <div class="container-fluid" style="min-height:100% width:80%">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible" role="alert">
+          {{message}}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    </div>
    </body>
 </html>
