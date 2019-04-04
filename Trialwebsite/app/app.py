@@ -137,7 +137,8 @@ def upload():
 			# when saving the file
 			f.save("static/videos/{}".format(f.filename))
 			#f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
-			return 'file uploaded successfully'
+			videos = os.listdir("static/videos")
+			return render_template('upload.html', videos=videos)
 		#        f.save(secure_filename(f.filename))
 
 	videos = os.listdir("static/videos")
@@ -169,8 +170,11 @@ def upload():
 	return render_template('upload.html')
 #>>>>>>> 87c7baff86dae773b762135ee41204844c919aa8
 
-@app.route('/delete_video', methods = ['POST'])
+@app.route('/delete_video/<filename>')
 def delete_video(filename):
+	if 'username' in session:
+		os.remove("static/videos/{}".format(filename))
+		return redirect(url_for('upload'))
 	return "test"
 
 if __name__ == '__main__':
