@@ -16,6 +16,8 @@ CREATE TABLE User (
 -- Insert user for testing purposes
 INSERT INTO User (Username, PasswordHash, DisplayName) VALUES("admin", "$5$rounds=535000$Lz8amuEeaJdfDLJ7$VzAbQapAX6F8rItWDJIDlNFrj80rg/xx7ItGAUjqehA", "admin");
 
+INSERT INTO User (Username, PasswordHash, DisplayName) VALUES("Jason", "$5$rounds=535000$Lz8amuEeaJdfDLJ7$VzAbQapAX6F8rItWDJIDlNFrj80rg/xx7ItGAUjqehA", "Jason");
+
 DROP TABLE IF EXISTS Video;
 
 CREATE TABLE Video (

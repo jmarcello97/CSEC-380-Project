@@ -12,6 +12,7 @@ import urllib.request
 import shutil
 import requests
 from datetime import datetime
+import sys
 
 time.sleep(30)
 app = Flask(__name__, template_folder="template")
@@ -101,8 +102,10 @@ def index():
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    dropSession()
-    return redirect(url_for('/'))
+	#dropSession()
+	#username=session['username']
+	session.pop("username", None)
+	return redirect(url_for('index'))
 
 @app.route("/video/<filename>")
 def video(filename):
@@ -132,7 +135,6 @@ def before_request():
 		g.user = session["username"]
 @app.route('/upload' , methods = ['GET', 'POST'] )
 def upload():
-#<<<<<<< HEAD
 	if 'username' in session:
 
 		if request.method == 'POST':
@@ -154,42 +156,37 @@ def upload():
 		return render_template('upload.html', videos=videos)
 		#        f.save(secure_filename(f.filename))
 
-	videos = os.listdir("static/videos")
+	#videos = os.listdir("static/videos")
 	#return render_template('test_upload.html')
-	return render_template('upload.html', videos=videos)
-#=======
-	if 'username' in session:
-		if request.method == 'POST':
-			#f = request.files['file']
-			f2 = request.form['link11']
+	#return render_template('upload.html', videos=videos)
+	#if 'username' in session:
+	#	if request.method == 'POST':
+	#		#f = request.files['file']
+	#		f2 = request.form['link11']
 
-            #if f:
-                # when saving the file
-             #   f.save(os.path.join(app.instance_path, 'video', secure_filename(f.filename)))
-              #  return 'file uploaded successfully'
-#             #  f.save(secure_filename(f.filename))
-			if f2:
-				url = request.form['link11']
-				reqGet = requests.get(url)
-				filename123 = url.split("/")[-1]
-				os.path.join(app.instance_path, "video", filename123)
-			with open(filename123,'wb') as vid:
-				shutil.copyfileobj(reqGet.raw, vid)
+	#		if f2:
+	#			url = request.form['link11']
+	#			reqGet = requests.get(url)
+	#			filename123 = url.split("/")[-1]
+	#			os.path.join(app.instance_path, "video", filename123)
+	#		with open(filename123,'wb') as vid:
+				#shutil.copyfileobj(reqGet.raw, vid)
 
                 #urllib.request.urlretrieve(url_link, 'video_name.mp4')
                 #v = pafy.new(str(url))
                 #s = v.allstreams[len(v.allstreams)-1]
                 #filename = s.download(os.path.join(app.instance_path, 'video', secure_filename(v.title)))
-	return render_template('upload.html')
-#>>>>>>> 87c7baff86dae773b762135ee41204844c919aa8
+	return render_template('index.html')
 
 @app.route('/delete_video/<filename>')
 def delete_video(filename):
 	if 'username' in session:
-		os.remove("static/videos/{}".format(filename))
+		#os.remove("static/videos/{}".format(filename))
+		print(session['username'], file=sys.stdout)
 		data=users.query.filter_by(Username=session['username']).first()
 		video=Video.query.filter_by(UserID=data.UserID,Name=filename).first()
-		if video.UserID == data.UserID:
+		if video != None:
+			os.remove("static/videos/{}".format(filename))
 			db.session.delete(video)
 			db.session.commit()
 		else:

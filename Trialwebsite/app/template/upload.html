@@ -1,10 +1,22 @@
 <html>
+   <style>
+   .logoutLblPos {
+      position:fixed;
+      right:10px;
+      top:5px;
+   }
+   </style>
    <body>
       <form action = "http://localhost:5000/upload" method ="POST" enctype = "multipart/form-data">
 	    Upload from Computer:<input type=file name=file> <input type=submit value=Upload_File> <br \>
 	    Upload from Link:<input type="text" name="link11"> <input type=submit value=Upload_Link>
 
       </form>
+      <form align="right" name="logout" method="POST">
+        <label class="logoutLblPos">
+        <a href="{{ url_for('logout') }}"> Logout </a>
+        </label>
+      </form> 
       <section class="row">
         {% for video in videos %}
           <section class="col-md-4 col-sm-6 style="background-color: green;">
