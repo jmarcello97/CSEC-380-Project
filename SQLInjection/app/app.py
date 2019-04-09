@@ -3,38 +3,19 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 #from flask_mysqldb import MySQL
 import MySQLdb
-from flask_sqlalchemy import SQLAlchemy
 from MySQLdb import escape_string as thwart
 from passlib.hash import sha256_crypt
 import os
 import time
 
-time.sleep(30)
+
 app = Flask(__name__, template_folder="template")
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@db:3306/users"
-db = SQLAlchemy(app)
-
-class users(db.Model):
-    __tablename__ = "User"
-    UserID = db.Column('UserID', db.Integer, primary_key=True)
-    Username = db.Column('Username', db.String(15))
-    PasswordHash = db.Column('PasswordHash', db.String(200))
-    DisplayName = db.Column('DisplayName', db.String(15))
-    #data = db.Column()
-
-
-    def __init__(self,UserID, Username, PasswordHash, DisplayName ):
-        self.UserID = UserID
-        self.Username = Username
-        self.PasswordHash = PasswordHash
-        self.DisplayName = DisplayName
-
 #used for seassion config
 secKey = os.urandom(24)
 app.secret_key = secKey
-#time.sleep(30)
-#conn = MySQLdb.connect(host="db", user="root", passwd="root", db="users", port = 3306)
-#c = conn.cursor()
+time.sleep(30)
+conn = MySQLdb.connect(host="db", user="root", passwd="root", db="users", port = 3306)
+c = conn.cursor()
 
 #for limiting the brute force attack
 limiter = Limiter (
@@ -52,13 +33,11 @@ def index():
 			# Fetch form data
 			username = request.form['username']
 			password = request.form['password']
-			#try:
-			data=users.query.filter_by(Username=username).first()
-			#except Exception as e:
-			#	flash(e)
-			#data = c.execute("SELECT * FROM User WHERE username = %s", [username])
-			#data = c.fetchone()[2]
-			if sha256_crypt.verify(password, str(data.PasswordHash)):
+			#flash(username)
+			#flash(password)
+			data = c.execute("SELECT * FROM User WHERE username = %s", [username])
+			data = c.fetchone()[2]
+			if sha256_crypt.verify(password, str(data)):
 				session['username'] = username
 				flash("you are now logged in")
 
