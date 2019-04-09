@@ -138,37 +138,44 @@ def before_request():
 
 @app.route('/upload' , methods = ['GET', 'POST'] )
 def upload():
-    try:
-        if 'username' in session:
-            if request.method == 'POST':
-                f = request.files['file']
-                if f:
+	error=''
+	try:
+		if 'username' in session:
+			if request.method == 'POST':
+				f = request.files['file']
+				if f:
 			# when saving the file
-                    f.save("static/videos/{}".format(f.filename))
+					f.save("static/videos/{}".format(f.filename))
 
-                    data=users.query.filter_by(Username=session['username']).first()
-                    new_video = Video(VideoID = None, UserID = data.UserID, URL = "local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
-                    db.session.add(new_video)
-                    db.session.commit()
+					data=users.query.filter_by(Username=session['username']).first()
+					new_video = Video(VideoID = None, UserID = data.UserID, URL = "local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
+					db.session.add(new_video)
+					db.session.commit()
                     #i = Video.insert()
                     #i.execute(UserID=data.UserID, URL = "Local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
-                f2 = request.form['link11']
-                if f2:
-                    url = request.form['link11']
-                    reqGet = requests.get(url)
-                    filename123 = url.split("/")[-1]
-                    with open(filename123,'wb') as vid:
-                        shutil.copyfileobj(reqGet.raw, vid)
+				f2 = request.form['link11']
+				if f2:
+					url = request.form['link11']
+					#reqGet = requests.get(url)
+					filename123 = url.split("/")[-1]
+					#with open(filename123,'wb') as vid:
+					#	shutil.copyfileobj(reqGet.raw, "static/videos/"+vid)
+					urllib.request.urlretrieve(url, "static/videos/"+filename123)
+					data = users.query.filter_by(Username=session['username']).first()
+					new_video = Video(VideoID = None, UserID = data.UserID, URL = "local", Name = filename123, UploadDate = datetime.today().strftime('%Y-%m-%d'))
+					db.session.add(new_video)
+					db.session.commit()
 
 
-        videos = []
-        for video in os.listdir("static/videos"):
-                video_uploader = Video.query.filter_by(Name=video).first()
-                video_uploader = users.query.filter_by(UserID=video_uploader.UserID).first()
-                videos.append((video, video_uploader.Username))
-        return render_template('upload.html', videos=videos)
-    except Exception as e:
-        return render_template("upload", error = error)
+			videos = []
+			for video in os.listdir("static/videos"):
+				video_uploader = Video.query.filter_by(Name=video).first()
+				video_uploader = users.query.filter_by(UserID=video_uploader.UserID).first()
+				videos.append((video, video_uploader.Username))
+			return render_template('upload.html', videos=videos)
+
+	except Exception as e:
+		return render_template("upload", error = e)
 
 
 		#        f.save(secure_filename(f.filename))
