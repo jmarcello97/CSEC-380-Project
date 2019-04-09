@@ -10,4 +10,5 @@
     - docker-compose -f ./tests/act4_test/docker-compose.yml up -d
   script:
     - python ./tests/test_webserver.py
-    - python ./tests/test_upload.py
+    #- python ./tests/test_upload.py
+    - pytest tests/test_upload.py
