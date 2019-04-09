@@ -1,11 +1,13 @@
 import pytest
 import requests
 
-def auth_attempt():
-	return requests.post("http://localhost:5000", {"username": "admin", "password": "password"}.text)	
-
 def upload_attempt():
-	return requests.post("http://localhost:5000/upload", {"file": "ocean.mp4"}.text)
+	s = requests.session()
+	auth = requests.post("http://localhost:5000", {"username": "admin", "password": "password"})
+	upload = s.post("http://localhost:5000/upload", files={"file": open('ocean.mp4', 'rb')}).text
+	print(upload)
+	return upload
+
+
 def test_authentication():
-	auth_attempt()
-	assert "ocean" in auth_attempt()
+	assert "ocean.mp4" in upload_attempt()
