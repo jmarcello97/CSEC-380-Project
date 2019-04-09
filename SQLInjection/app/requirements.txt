@@ -1,0 +1,9 @@
+pytest
+requests
+flask
+flask-mysqldb
+flask_socketio
+passlib
+mysqlclient
+flask.session
+flask_limiter
