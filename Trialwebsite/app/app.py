@@ -142,9 +142,10 @@ def upload():
 	try:
 		if 'username' in session:
 			if request.method == 'POST':
-				f = request.files['file']
-				if f:
+				#f = request.files['file']
+				if 'file' in request.files.keys():
 			# when saving the file
+					f = request.files['file']
 					f.save("static/videos/{}".format(f.filename))
 
 					data=users.query.filter_by(Username=session['username']).first()
@@ -153,8 +154,9 @@ def upload():
 					db.session.commit()
                     #i = Video.insert()
                     #i.execute(UserID=data.UserID, URL = "Local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
-				f2 = request.form['link11']
-				if f2:
+
+				#f2 = request.form['link11']
+				if 'link11' in request.form.keys():
 					url = request.form['link11']
 					#reqGet = requests.get(url)
 					filename123 = url.split("/")[-1]
