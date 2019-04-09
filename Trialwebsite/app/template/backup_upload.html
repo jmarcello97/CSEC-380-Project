@@ -15,5 +15,16 @@
           </section>
         {% endfor %}
       </section>
+    <div class="container-fluid" style="min-height:100% width:80%">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible" role="alert">
+          {{message}}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    </div>
    </body>
 </html>

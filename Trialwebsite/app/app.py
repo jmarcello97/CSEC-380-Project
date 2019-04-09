@@ -134,6 +134,7 @@ def before_request():
 def upload():
 #<<<<<<< HEAD
 	if 'username' in session:
+
 		if request.method == 'POST':
 			f = request.files['file']
 			# when saving the file
@@ -145,12 +146,12 @@ def upload():
 			db.session.commit()
 			#i = Video.insert()
 			#i.execute(UserID=data.UserID, URL = "Local", Name = f.filename, UploadDate = datetime.today().strftime('%Y-%m-%d'))
-			videos = []
-			for video in os.listdir("static/videos"):
-				video_uploader = Video.query.filter_by(Name=video).first()
-				video_uploader = users.query.filter_by(UserID=video_uploader.UserID).first()
-				videos.append((video, video_uploader.Username))
-			return render_template('upload.html', videos=videos)
+		videos = []
+		for video in os.listdir("static/videos"):
+			video_uploader = Video.query.filter_by(Name=video).first()
+			video_uploader = users.query.filter_by(UserID=video_uploader.UserID).first()
+			videos.append((video, video_uploader.Username))
+		return render_template('upload.html', videos=videos)
 		#        f.save(secure_filename(f.filename))
 
 	videos = os.listdir("static/videos")
