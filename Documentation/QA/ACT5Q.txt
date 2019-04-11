@@ -1,0 +1,6 @@
+•	How would you fix your code so that these issues were no longer present?
+
+
+•	What are the limitations, if any that, of the SQL Injection issues you’ve included?
+
+

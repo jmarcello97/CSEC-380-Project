@@ -1,0 +1,7 @@
+•	How do you prevent XSS is this step when displaying the username of the user who uploaded the video?
+
+
+
+•	How do you ensure that users can’t delete videos that aren’t their own?
+
+

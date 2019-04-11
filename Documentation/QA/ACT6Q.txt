@@ -1,0 +1,6 @@
+•	How would you fix your code so that this issue is no longer present?
+
+
+
+•	How does your test demonstrate SSRF as opposed to just accessing any old endpoint
+.
