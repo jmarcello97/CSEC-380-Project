@@ -1,6 +1,8 @@
 •	How would you fix your code so that this issue is no longer present?
-
+     2 Possible fixes for this issue are as follows:
+       1.) We could add in a whitelist of file names that are not allowed to be uploaded if a user was to pass in a URL to them.
+       2. ) We could add in a check that doesn't allow files from an internal IP to be uploaded. Instead the file retrieved from the URL must be from an external source.
 
 
 •	How does your test demonstrate SSRF as opposed to just accessing any old endpoint
-.
+       We know this test is SSRF because when the URL gets submitted the request is put directly into our webserver rather than through some other endpoint. 
