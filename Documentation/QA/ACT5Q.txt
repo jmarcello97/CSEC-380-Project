@@ -2,6 +2,6 @@
 Using SQLAlchemy library to map the query would fix the issues. Additionally, sanatizaing the input is a good practice to handle the SQL injection.
 
 •	What are the limitations, if any that, of the SQL Injection issues you’ve included?
-
+When excuting a blind sql injection, there is limitation with the technique we used as we sometimes cannot get any error message that indicate there is someting wrong going on
 
 
