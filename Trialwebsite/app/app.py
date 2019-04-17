@@ -84,9 +84,9 @@ def index():
 			data = c.execute("SELECT * FROM User WHERE Username = '{}'".format(username))
 			#except Exception as e:
 				#flash(e)
-			#flash(data)
+			flash(data)
 			data = c.fetchone()[2]
-			#flash(data)
+			flash(data)
 			#data=users.query.filter_by(Username=username).first()
 			#except Exception as e:
 			#	flash(e)
@@ -195,7 +195,7 @@ def upload():
 			video_uploader = c.fetchone()[0]
 			video_uploader = c.execute("SELECT * FROM User WHERE UserID = '{}'".format(video_uploader))
 			username = c.fetchone()[1]
-			videos.append((video, username)) 
+			videos.append((video, username))
 		return render_template('upload.html', videos=videos)
 	return render_template('index.html')
 
