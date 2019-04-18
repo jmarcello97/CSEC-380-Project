@@ -11,6 +11,4 @@
   before_script:
     - sleep 30
   script:
-    - python ./tests/test_webserver.py
-    #- python ./tests/test_upload.py
     - pytest tests/test_all.py
