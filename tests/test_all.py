@@ -2,9 +2,9 @@ import pytest
 import requests
 
 def auth_attempt():
+	correct_login = requests.post("http://localhost:5000", {"username": "admin", "password": "password"}).text
 	incorrect_username = requests.post("http://localhost:5000", {"username": "asd", "password": "password"}).text
 	incorrect_password = requests.post("http://localhost:5000", {"username": "admin", "password": "asd"}).text
-	correct_login = requests.post("http://localhost:5000", {"username": "admin", "password": "password"}).text
 
 	return "Invalid username" in incorrect_username and "Invalid password" in incorrect_password and "Upload from Link" in correct_login
  
