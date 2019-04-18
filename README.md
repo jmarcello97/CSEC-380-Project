@@ -3,14 +3,14 @@ CSEC-380_project
 Documentation:
 this folder contains all the documentation related to the project along with the questions and answers. 
 
-Website:
-this folder contains the docker functionl website run as "docker-compose up"
+TrialWebsite:
+this folder contains the docker functional website run as "docker-compose up"
 
 Website User Credentials:
 admin:password
 Jason:password
 
 tests:
-this folder for travis test to test the functionlaity of the website
+this folder is for travis tests to test the functionality of the website. "test_all.py" contains all tests
 
 
