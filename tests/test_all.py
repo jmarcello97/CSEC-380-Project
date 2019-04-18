@@ -20,4 +20,5 @@ def upload_attempt():
 	return upload_success and delete_success and get_video_success
 
 def test_authentication():
-	assert auth_attempt() and upload_attempt()
+	assert auth_attempt()
+	assert upload_attempt()
