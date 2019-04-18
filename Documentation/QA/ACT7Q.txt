@@ -1,2 +1,3 @@
 •	How would you fix your code so that this issue is no longer present?
+In order to resolve this issues, passing an arugment dirctely from the end user to the os (eg. os.system) in the system library is critical and would cause such attack. So an  input sanatization before supplying that to the os is mandatory and will help fix the issue.
 
