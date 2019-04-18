@@ -7,9 +7,9 @@
     - docker
   before_install:
     - docker-compose -f ./tests/act2_test/docker-compose.yml up -d
-    - docker-compose -f ./tests/act4_test/docker-compose.yml up -d
+    - docker-compose -f ./tests/final_test/docker-compose.yml up -d
   before_script:
-    - sleep 60
+    - sleep 30
   script:
     - python ./tests/test_webserver.py
     #- python ./tests/test_upload.py
