@@ -2,6 +2,11 @@ import pytest
 import requests
 import time
 
+# test activity 2
+def hello_world():
+	return requests.get("http://localhost").text
+
+# test activity 3
 def auth_attempt():
 	correct_login = requests.post("http://localhost:5000", {"username": "admin", "password": "password"}).text
 	incorrect_username = requests.post("http://localhost:5000", {"username": "asd", "password": "password"}).text
@@ -9,6 +14,7 @@ def auth_attempt():
 
 	return "Invalid username" in incorrect_username and "Invalid password" in incorrect_password and "Upload from Link" in correct_login
  
+# test activity 4
 def upload_attempt():
 	s = requests.session()
 	auth = s.post("http://localhost:5000", {"username": "admin", "password": "password"})
@@ -21,5 +27,6 @@ def upload_attempt():
 	return upload_success and delete_success and get_video_success
 
 def test_authentication():
+	assert "Hello World" in hello_world
 	assert auth_attempt()
 	assert upload_attempt()
