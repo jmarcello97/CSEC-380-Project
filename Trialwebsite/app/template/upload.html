@@ -1,0 +1,42 @@
+<html>
+   <style>
+   .logoutLblPos {
+      position:fixed;
+      right:10px;
+      top:5px;
+   }
+   </style>
+   <body>
+      <form action = "http://localhost:5000/upload" method ="POST" enctype = "multipart/form-data">
+	    Upload from Computer:<input type=file name=file> <input type=submit value=Upload_File> <br \>
+	    Upload from Link:<input type="text" name="link11"> <input type=submit value=Upload_Link>
+
+      </form>
+      <form align="right" name="logout" method="POST">
+        <label class="logoutLblPos">
+        <a href="{{ url_for('logout') }}"> Logout </a>
+        </label>
+      </form> 
+      <section class="row">
+        {% for video in videos %}
+          <section class="col-md-4 col-sm-6 style="background-color: green;">
+            <p> {{ video[1] }}: <a href="{{ url_for('static', filename = "videos/"+video[0] )}}"> {{ video[0] }}</a>
+            <a href="{{ url_for('delete_video', filename = video[0]) }}" method = "POST">
+            <img border="0" alt="delete" src="static/images/trash.png" width="15" height="15">
+            </a></p>
+          </section>
+        {% endfor %}
+      </section>
+    <div class="container-fluid" style="min-height:100% width:80%">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible" role="alert">
+          {{message}}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    </div>
+   </body>
+</html>

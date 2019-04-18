@@ -13,4 +13,4 @@
   script:
     - python ./tests/test_webserver.py
     #- python ./tests/test_upload.py
-    - pytest tests/test_upload.py
+    - pytest tests/test_all.py
