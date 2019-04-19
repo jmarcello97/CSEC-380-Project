@@ -4,4 +4,6 @@ Ideally, we can implement a Content-Security-Policy that will require all resour
 
 
 •	How do you ensure that users can’t delete videos that aren’t their own?
-In the database we attache the video with the user id and check if the video is actullay belongs to the user who tries to delete it, if the user own the video then he can delete it, however, if the user is no the owner of the video then a warning pops up and the video does not get deleted.
+In the database we attach the video with the user id and check if the video is actullay belongs to 
+the user who tries to delete it, if the user own the video then he can delete it, 
+however, if the user is no the owner of the video then a warning pops up and the video does not get deleted.
